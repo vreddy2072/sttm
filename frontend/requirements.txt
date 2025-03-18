@@ -1,0 +1,14 @@
+next.js
+react
+react-dom
+typescript
+@mui/material
+@emotion/react
+@emotion/styled
+@tanstack/react-table
+lucide-react
+@tanstack/react-query
+react-hook-form
+zod
+@hookform/resolvers
+tailwindcss 
