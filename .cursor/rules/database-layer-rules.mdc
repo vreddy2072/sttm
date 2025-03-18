@@ -1,0 +1,13 @@
+---
+description: database-rules
+globs: 
+alwaysApply: false
+---
+# Database Layer Rules
+- Database files should be created only under folder 'backend/database', 'backend' is a directory relative to project root folder.
+- Database 'backend/database/sttm.db' should be used for this project
+- Database schema updates should be handled via migration scripts created under 'backend/database/migrations' folder.
+- Migration scripts should be number prefixed like '1_', '2_' etc.
+- Migration scripts should be post fixed by user story like '1_create_sttm_list_table' for which database change is being implemented.
+- Migration scripts should be created for both upgrade and downgrade. Example '1_create_sttm_list_table.up' and '1_create_sttm_list_table.down'. When upgrading, '.up' script is executed. When downgrading '.down' script is executed.
+- Cursor should track the latest migration applied to the database in text file 'backend/database/last_migration'.

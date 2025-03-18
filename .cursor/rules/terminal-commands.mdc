@@ -1,0 +1,9 @@
+---
+description: terminal-commands
+globs: 
+alwaysApply: false
+---
+
+# Your rule content
+To run multiple commands in a terminal, use ; instead of &&
+

@@ -1,0 +1,10 @@
+---
+description: API-Layer-Rules
+globs: 
+alwaysApply: false
+---
+- APIs implemented using FastAPI library
+- API files should be created only under folder 'backend/api', backend directory is relative to project root folder.
+- API should integrate with the Service layer. If there is no Service Layer defined for the new APIs, refer to Service Layer rules in building Service Layer.
+- Cursor AI should ensure OpenAPI documentation is generated.
+- Error handling should be implemented before exposing any API endpoint.

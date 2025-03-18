@@ -1,0 +1,11 @@
+---
+description: orm-layer-rules
+globs: 
+alwaysApply: false
+---
+# ORM Layer Rules
+- ORM files should be created only under folder 'backend/orm', backend directory is relative to project root folder.
+- ORM Model files should be created under folder 'backend/orm/model'.
+- ORM should only perform database operations; no business logic should exist here.
+- Cursor AI should use SQLAlchemy for ORM mapping.
+- ORM layer should support CRUD operations for the tables in Database

@@ -1,0 +1,16 @@
+---
+description: Buid-UI
+globs: 
+alwaysApply: false
+---
+# UI Layer Rules
+- All UI components should be built using below Technical Requirements:
+	- Framework: Next.js with React and TypeScript
+	- UI Component Library: Material-UI for structured components
+	- Styling: Tailwind CSS for flexible custom styling
+	- Icons: lucide-react for consistent, lightweight SVG icons
+	- Data Grid: TanStack Table (formerly React Table) with custom drag functionality
+	- State Management: React Query for server state + Context API for UI state
+	- Form Handling: React Hook Form with Zod for validation
+- UI files should be created only under folder 'frontend', 'frontend' is a directory relative to project root folder.
+- UI should only build UI code based on APIs available in API layer. When there are no APIs available in API layer, UI should not build code. Rather, build first APIs in API layer than build UI features. Refer to API build rules for building APIs.

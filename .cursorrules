@@ -1,0 +1,169 @@
+{
+    "rules": [
+      {
+        "rule": "Check if frontend application server is already running",
+        "description": "Cursor AI should check if frontend application server is already running on port 3000 at URL http://localhost:3000. If yes, do not run it again.",
+        "severity": "high",
+        "examples": {
+          "bad": "Running frontend application server multiple times.",
+          "good": "Running frontend application server only once at http://localhost:3000."
+        }
+      },
+      {
+        "rule": "Running backend application server only once",
+        "description": "Cursor AI should run backend application server only once. Check if backend application server is already running on port 8000 at URL http://127.0.0.1:8000. If yes, do not run it again.",
+        "severity": "high",
+        "examples": {
+          "bad": "Running backend application server multiple times.",
+          "good": "Running backend application server only once at http://127.0.0.1:8000."
+        }
+      },
+      {
+        "rule": "Running backend application server",
+        "description": "Cursor AI should run backend application server using 'python -m uvicorn backend.main:app --reload' command.",
+        "severity": "high",
+        "examples": {
+          "bad": "Running backend application server using 'cd backend ;python -m uvicorn main:app --reload' command.",
+          "good": "Running backend application server using 'python -m uvicorn backend.main:app --reload' command."
+        }
+      },
+      {
+        "rule": "Running frontend application server",
+        "description": "Cursor AI should run frontend application server using 'cd frontend ; npm run dev' command.",
+        "severity": "high",
+        "examples": {
+          "bad": "Running frontend application server using 'npm run dev' command.",
+          "good": "Running frontend application server using 'cd frontend ; npm run dev' command."
+        }
+      },
+      {
+        "rule": "Create folders only after approval",
+        "description": "Cursor AI should not create folders without approval.",
+        "severity": "high",
+        "examples": {
+          "bad": "Creating a new folder directly under 'backend'.",
+          "good": "Creating a new folder under 'backend' after approval."
+        }
+      },
+      {
+        "file": "application_requirements.mdc",
+        "rule": "Break down Application Requirements into Features and User Stories",
+        "description": "Cursor AI should process requirements.md file and extract Application Features into features.md. Each feature should be broken down into user stories in userstories.md. These files should track implementation status.",
+        "severity": "high"
+      },
+      {
+        "file": "requirements.txt",
+        "rule": "Only install all dependencies from requirements.txt from respective frontend and backend folders. Do not install dependencies randomly.",
+        "description": "Cursor AI should install all dependencies from requirements.txt file. If dependencies doesn't exist in requirements.txt, add it and then install from requirements.txt.",
+        "severity": "high"
+      },
+      {
+        "rule": "Only modify one layer at a time",
+        "description": "Cursor AI should work on a single layer (UI, API, Services, ORM, or Database) at a time. Large-scale refactors should be avoided.",
+        "severity": "high",
+        "examples": {
+          "bad": "Updating API and ORM logic in the same commit.",
+          "good": "First modify Service layer, then API layer, then UI layer, validate each layer, then move to the next layer."
+        }
+      },
+      {
+        "rule": "Follow architectural layer sequence",
+        "description": "Changes should start from the Service layer creating dummy data in dummy datastore cache, followed by API layer, then UI layer. Then create Database model and ORM layer. Switch Service layer to use ORM layer instead of dummy datastore cache.",
+        "severity": "medium",
+        "examples": {
+          "bad": "Implementing a UI change before defining API endpoints. Implementing API endpoints before Service layer is ready. Implementing Database model before testing with dummy data.",
+          "good": "Starting with Service Layer using dummy datastore cache, create associated API endpoints, ensure each layer work, then proceeding to UI layer."
+        }
+      },
+      {
+        "rule": "Write tests before modifying code",
+        "description": "Before any implementation or change, Cursor AI should generate corresponding unit tests to validate behavior.",
+        "severity": "high",
+        "examples": {
+          "bad": "Adding new API logic without writing tests first.",
+          "good": "Writing test cases for API first, running them, and then making changes."
+        }
+      },
+      {
+        "rule": "Do not modify working code unless necessary",
+        "description": "Cursor AI should avoid refactoring or changing code unless explicitly requested.",
+        "severity": "high",
+        "examples": {
+          "bad": "Refactoring API response structure without a request.",
+          "good": "Only modifying API logic when there's a valid reason to do so."
+        }
+      },
+      {
+        "rule": "Run tests after every change",
+        "description": "After making a change, Cursor AI should execute tests and confirm success before proceeding.",
+        "severity": "critical",
+        "examples": {
+          "bad": "Making multiple changes without running any tests.",
+          "good": "After modifying a function, running tests to ensure correctness."
+        }
+      },
+      {
+        "rule": "Use Virtual Environment for Python",
+        "description": "Cursor AI must ensure that all libraries are installed and executed within a Python virtual environment (venv).",
+        "severity": "high",
+        "examples": {
+          "bad": "Installing libraries globally using pip install <package>",
+          "good": "Creating a virtual environment and installing dependencies inside it."
+        }
+      },
+      {
+        "rule": "Use ';' instead of '&&' for multiple commands on Windows",
+        "description": "Cursor AI should use ';' instead of '&&' when chaining multiple commands in the Windows terminal.",
+        "severity": "high",
+        "examples": {
+          "bad": "pip install -r requirements.txt && python main.py",
+          "good": "pip install -r requirements.txt ; python main.py"
+        }
+      },
+      {
+        "rule": "Test-driven feature implementation",
+        "description": "For each feature and user story implementation, Cursor AI should first write unit and integration tests before implementing the actual code. Tests should be executed iteratively until all pass.",
+        "severity": "critical",
+        "examples": {
+          "bad": "Writing implementation first, then testing later.",
+          "good": "Writing unit tests first, implementing code iteratively, running tests at every step."
+        }
+      }, {
+        "rule": "No files should be created under the root folder 'excel-app'",
+        "description": "Cursor AI must ensure that all new files are created inside the respective layer folders (frontend, backend/api, backend/service, backend/orm, backend/database).",
+        "severity": "high",
+        "examples": {
+          "bad": "Creating a new API file directly under 'excel-app'",
+          "good": "Creating a new API file under 'backend/api' folder."
+        }
+      },
+      {
+        "rule": "Test files should be created under test folders in respective layers",
+        "description": "Cursor AI should ensure that test files are stored within dedicated test folders inside each layer (e.g., backend/api/tests, backend/service/tests, frontend/tests).",
+        "severity": "high",
+        "examples": {
+          "bad": "Storing test files in the main implementation folders.",
+          "good": "Placing test files in 'backend/api/tests' for API-related tests."
+        }
+      },
+      {
+        "rule": "Unit and Integration Test files should be created under designated test folders",
+        "description": "Cursor AI should ensure that Unit and Integration test files are stored within dedicated test folders: Unit tests should be placed in 'tests/unit' and Integration tests in 'tests/int'.",
+        "severity": "high",
+        "examples": {
+          "bad": "Storing all test files together without separation of unit and integration tests.",
+          "good": "Placing unit test files in 'tests/unit' and integration test files in 'tests/int'."
+        }
+      },
+      {
+        "rule": "Ensure correct syntax for Windows PowerShell",
+        "description": "Cursor AI should use delimiter ',' in PowerShell when executing multiple commands.",
+        "severity": "high",
+        "examples": {
+          "bad": "Using 'mkdir backend/api/tests/unit backend/api/tests/int' in PowerShell.",
+          "good": "Use 'mkdir backend/api/tests/unit, backend/api/tests/int' in PowerShell."
+        }
+      }
+    ]
+  }
+  

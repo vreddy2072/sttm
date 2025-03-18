@@ -1,0 +1,12 @@
+---
+description: sevice-layer-rules
+globs: 
+alwaysApply: false
+---
+# Service Layer Rules
+- Service files should be created only under folder 'backend/service', backend directory is relative to project root folder.
+- Data cache files should be created only under folder 'backend/cache' backend directory is relative to project root folder.
+- All business logic must be implemented here and should not reside in the API layer.
+- First implement logic using dummy data cache, state is maintained by the data cache.
+- Services interacts with ORM layer for actual data retrieval.
+- Should have capability to switch between dummy data versus actual data from ORM layer.
