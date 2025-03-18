@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MainLayout from '@/components/layout/MainLayout';
-import MappingGrid from '@/components/mappings/MappingGrid';
+import MappingGridAG from '@/components/mappings/MappingGridAG';
 import MappingForm from '@/components/mappings/MappingForm';
 import { 
   useMappings, 
@@ -145,6 +145,40 @@ export default function MappingsPage() {
     }
   };
   
+  const handleInPlaceEdit = (updatedMapping: EnrichedMapping) => {
+    updateMappingMutation.mutate(
+      { 
+        id: updatedMapping.id, 
+        mapping: {
+          source_table_id: updatedMapping.source_table_id,
+          source_column_id: updatedMapping.source_column_id,
+          target_table_id: updatedMapping.target_table_id,
+          target_column_id: updatedMapping.target_column_id,
+          release_id: updatedMapping.release_id,
+          status: updatedMapping.status,
+          jira_ticket: updatedMapping.jira_ticket,
+          description: updatedMapping.description
+        }
+      },
+      {
+        onSuccess: () => {
+          setNotification({
+            open: true,
+            message: 'Mapping updated successfully',
+            severity: 'success',
+          });
+        },
+        onError: (error) => {
+          setNotification({
+            open: true,
+            message: `Error updating mapping: ${error.message}`,
+            severity: 'error',
+          });
+        },
+      }
+    );
+  };
+  
   const handleDeleteMapping = (mapping: EnrichedMapping) => {
     if (confirm('Are you sure you want to delete this mapping?')) {
       deleteMappingMutation.mutate(
@@ -214,55 +248,49 @@ export default function MappingsPage() {
           
           <TabPanel value={tabValue} index={0}>
             {isLoading ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
                 <CircularProgress />
               </Box>
             ) : (
-              <MappingGrid
+              <MappingGridAG
                 mappings={mappings || []}
                 isLoading={isLoading}
                 onEdit={handleOpenForm}
                 onDelete={handleDeleteMapping}
+                onAdd={() => handleOpenForm()}
+                onSave={handleInPlaceEdit}
               />
             )}
           </TabPanel>
           
           <TabPanel value={tabValue} index={1}>
             {isLoading ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
                 <CircularProgress />
               </Box>
             ) : (
               <Box>
-                {releases?.map((release) => (
-                  <Box key={release.id} sx={{ mb: 4 }}>
-                    <Typography variant="h6" sx={{ mb: 2 }}>
-                      {release.name} ({release.status})
-                    </Typography>
-                    <MappingGrid
-                      mappings={(mappings || []).filter(
-                        (mapping) => mapping.release_id === release.id
-                      )}
-                      isLoading={isLoading}
-                      onEdit={handleOpenForm}
-                      onDelete={handleDeleteMapping}
-                    />
-                  </Box>
-                ))}
-                
-                <Box sx={{ mt: 4 }}>
-                  <Typography variant="h6" sx={{ mb: 2 }}>
-                    Unassigned Mappings
-                  </Typography>
-                  <MappingGrid
-                    mappings={(mappings || []).filter(
-                      (mapping) => !mapping.release_id
-                    )}
-                    isLoading={isLoading}
-                    onEdit={handleOpenForm}
-                    onDelete={handleDeleteMapping}
-                  />
-                </Box>
+                {releases?.map((release) => {
+                  const releaseMappings = mappings?.filter(
+                    (m) => m.release_id === release.id
+                  ) || [];
+                  
+                  return (
+                    <Box key={release.id} sx={{ mb: 4 }}>
+                      <Typography variant="h6" sx={{ mb: 2 }}>
+                        {release.name} ({release.status})
+                      </Typography>
+                      <MappingGridAG
+                        mappings={releaseMappings}
+                        isLoading={isLoading}
+                        onEdit={handleOpenForm}
+                        onDelete={handleDeleteMapping}
+                        onAdd={() => handleOpenForm()}
+                        onSave={handleInPlaceEdit}
+                      />
+                    </Box>
+                  );
+                })}
               </Box>
             )}
           </TabPanel>
@@ -281,7 +309,6 @@ export default function MappingsPage() {
         open={notification.open}
         autoHideDuration={6000}
         onClose={handleCloseNotification}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Alert
           onClose={handleCloseNotification}
