@@ -16,6 +16,8 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import MainLayout from '@/components/layout/MainLayout';
 import MappingGridAG from '@/components/mappings/MappingGridAG';
+import MappingGridCommunity from '@/components/mappings/MappingGridCommunity';
+import MappingGridMUIX from '@/components/mappings/MappingGridMUIX';
 import MappingForm from '@/components/mappings/MappingForm';
 import { 
   useMappings, 
@@ -53,7 +55,11 @@ export default function MappingsPage() {
   const viewParam = searchParams.get('view');
   
   // State for tab management
-  const [tabValue, setTabValue] = useState(viewParam === 'releases' ? 1 : 0);
+  const [tabValue, setTabValue] = useState(
+    viewParam === 'releases' ? 1 : 
+    viewParam === 'ag-grid' ? 2 : 
+    viewParam === 'mui-x' ? 3 : 0
+  );
   
   // State for form dialog
   const [formOpen, setFormOpen] = useState(false);
@@ -243,6 +249,8 @@ export default function MappingsPage() {
             <Tabs value={tabValue} onChange={handleTabChange} aria-label="mapping tabs">
               <Tab label="All Mappings" id="mapping-tab-0" aria-controls="mapping-tabpanel-0" />
               <Tab label="By Release" id="mapping-tab-1" aria-controls="mapping-tabpanel-1" />
+              <Tab label="Custom Grid" id="mapping-tab-2" aria-controls="mapping-tabpanel-2" />
+              <Tab label="MUI X Data Grid" id="mapping-tab-3" aria-controls="mapping-tabpanel-3" />
             </Tabs>
           </Box>
           
@@ -291,6 +299,70 @@ export default function MappingsPage() {
                     </Box>
                   );
                 })}
+              </Box>
+            )}
+          </TabPanel>
+          
+          <TabPanel value={tabValue} index={2}>
+            {isLoading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Box>
+                <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                  Data Mappings with Enhanced Grid Features
+                </Typography>
+                <Box
+                  component="div"
+                  sx={{ 
+                    position: 'relative',
+                    minHeight: '680px' // Ensure enough space for the grid
+                  }}
+                >
+                  {typeof window !== 'undefined' && (
+                    <MappingGridCommunity
+                      mappings={mappings || []}
+                      isLoading={isLoading}
+                      onEdit={handleOpenForm}
+                      onDelete={handleDeleteMapping}
+                      onAdd={() => handleOpenForm()}
+                      onSave={handleInPlaceEdit}
+                    />
+                  )}
+                </Box>
+              </Box>
+            )}
+          </TabPanel>
+          
+          <TabPanel value={tabValue} index={3}>
+            {isLoading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', p: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <Box>
+                <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                  MUI X Data Grid with Advanced Features
+                </Typography>
+                <Box
+                  component="div"
+                  sx={{ 
+                    position: 'relative',
+                    minHeight: '680px' // Ensure enough space for the grid
+                  }}
+                >
+                  {typeof window !== 'undefined' && (
+                    <MappingGridMUIX
+                      mappings={mappings || []}
+                      isLoading={isLoading}
+                      onEdit={handleOpenForm}
+                      onDelete={handleDeleteMapping}
+                      onAdd={() => handleOpenForm()}
+                      onSave={handleInPlaceEdit}
+                    />
+                  )}
+                </Box>
               </Box>
             )}
           </TabPanel>
